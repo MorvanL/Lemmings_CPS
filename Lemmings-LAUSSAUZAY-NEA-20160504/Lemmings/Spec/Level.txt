@@ -1,0 +1,60 @@
+﻿Service: Level
+
+Types: bool, int, enum Nature{EMPTY, DIRT, METAL, ENTRANCE, EXIT}
+
+Observators: 
+			 const height: [Level] -> int
+             const width: [Level] -> int
+             editing: [Level] -> bool
+             nature: [Level] * int * int -> Nature
+                 pre nature(L,h,w) require squareExist(L,h,w)
+             obstacle: [Level] * int * int -> bool
+             	 pre obstacle(L,h,w) require squareExist(L,h,w)
+             squareExist: [Level] * int * int -> bool
+             hEntrance: [Level] -> int
+             	 pre hEntrance(L) require editing(L) = false 
+             wEntrance: [Level] -> int
+             	 pre wEntrance(L) require editing(L) = false 
+            
+Constructors: 
+			 init: int * int -> [Level]
+                 pre init(h,w) require 15 <= h <= 50  ^  15 <= w <= 50
+ 
+Operators: 
+		    setNature: [Level] * int * int * Nature -> [Level]
+ 				pre setNature(L,h,w,n) require editing(L)
+ 											   ^ squareExist(L,h,w)
+ 											   ^ n != Nature::ENTRANCE ^ n != Nature::EXIT
+ 			remove: [Level] * int * int -> [Level]
+            	pre remove(L,h,w) require editing(L)=false ^ nature(L,h,w)=Nature::DIRT
+            build: [Level] * int * int -> [Level]          
+				pre build(L,h,w) require editing(L)=false ^ nature(L,h,w)=Nature::EMPTY
+            goPlay: [Level] * int * int *int *int -> [Level]
+            	pre goPlay(L,h1,w1,h2,w2) require 
+            			∀ i, 0 ≤ i ≤ height(L)-1, nature(L,i,0)=Nature::METAL ^ nature(L,i,width(L)-1)=Nature::METAL   
+            			^ ∀ j, 0 ≤ j ≤ width(L)-1, nature(L,0,j)=Nature::METAL ^ nature(L,height(L)-1,j)=Nature::METAL
+            			^ editing(L)
+            			^ nature(L,h1,w1)=Nature::EMPTY ^ nature(L,h1-1,w1)=Nature::EMPTY ^ nature(L,h1+1,w1)=Nature::EMPTY
+            			^ nature(L,h2,w2)=Nature::EMPTY ^ nature(L,h2-1,w2)=Nature::EMPTY ^ nature(L,h2+1,w2)=Nature::METAL 
+Observations: 
+			  [invariants]
+			  		∀ i, 0 ≤ i < height(L) ^ ∀ j, 0 ≤ j < width(L), squareExist(L,i,j)
+			  		∀ i, 0 ≤ i < height(L) ^ ∀ j, 0 ≤ j < width(L), obstacle(L,i,j) = (nature(L,i,j) = Nature::DIRT  or  nature(L,i,j) = Nature::METAL) //minimisation
+			  [init]	
+			  		height(init(h,w)) = h
+			  		width(init(h,w)) = w
+			  		editing(init(h,w)) = true
+			  		∀ i, 0 ≤ i < height(init(h,w)) ^ ∀ j, 0 ≤ j < width(init(h,w)), nature(init(h,w),i,j)=Nature::EMPTY 
+			  [setNature]
+			  		nature(setNature(L,h,w,n),h,w) = n 
+			  [remove]
+			  		nature(remove(L,h,w),h,w) = Nature::EMPTY
+			  [build]
+			  		nature(build(L,h,w),h,w) = Nature::DIRT
+			  [goPlay]
+			  		editing(goPlay(L,h1,w1,h2,w2)) = false
+			  		hEntrance(goPlay(L,h1,w1,h2,w2)) = h1  
+			  		wEntrance(goPlay(L,h1,w1,h2,w2)) = w1
+			  		nature(goPlay(L,h1,w1,h2,w2),h1,w1) = ENTRANCE
+			  		nature(goPlay(L,h1,w1,h2,w2),h2,w2) = EXIT
+	

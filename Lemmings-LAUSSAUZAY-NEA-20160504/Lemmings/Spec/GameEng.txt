@@ -1,0 +1,62 @@
+Service: GameEng
+
+Types: bool, int
+
+Observators:
+			 score: [GameEng] -> int
+			 	   pre score(G) require gameOver(G)
+			 turn: [GameEng] -> int
+			 const sizeColony: [GameEng] -> int
+			 nbLemmingsDead: [GameEng] -> int
+			 nbLemmingsSaved: [GameEng] -> int 
+			 nbLemmingsActive: [GameEng] -> int
+			 nbLemmingsCreated: [GameEng] -> int
+			 lemming: [GameEng] * int -> Lemming
+			 	   pre lemming(G,num) require active(G,num)
+			 active: [GameEng] * int -> bool
+			 numLemmingsActive: [GameEng] -> Set<int>
+			 const spawnSpeed: [GameEng] -> int
+			 gameOver:[GameEng] -> bool
+			 level: [GameEng] -> Level
+			 const levelInit: [GameEng] -> Level
+			 
+Constructors: 
+			 init: int * int * Level -> [GameEng]
+			 	   pre init(sizeC,spawnS,L) require sizeC>0 ^ spawnS>0
+Operators:
+			 executeTurn: [GameEng] -> [GameEng]
+			 	pre executeTurn(G) require gameOver(G)=false
+			 
+Observations: 
+			 [invariants]
+			 		∀ num ∈ numLemmingsActive(G), active(G,num) //minimisation
+			 		gameOver(G) = (nbLemmingsSaved(G) + nbLemmingsDead(G) = sizeColony(G)) //minimisation
+			 		nbLemmingsActive(G) = card(numLemmingsActive(G)) //minimisation
+			 		nbLemmingsCreated(G) = nbLemmingsDead(G) + nbLemmingsSaved(G) + nbLemmingsActive(G)  //minimisation 
+			 		sizeColony(G) ≥ nbLemmingsCreated(G)
+			 		nbLemmingsActive(G) ≥ 0
+			 		nbLemmingsDead(G)≥ 0
+			 		nbLemmingsSaved(G) ≥ 0
+			 		nbLemmingsCreated(G) ≥ 0
+			 [init]
+			 		turn(init(sizeC,spawnS,L)) = 0
+			 		sizeColony(init(sizeC,spawnS,L)) = sizeC
+			 		nbLemmingsDead(init(sizeC,spawnS,L)) = 0
+			 		nbLemmingsSaved(init(sizeC,spawnS,L)) = 0
+			 		card(numLemmingsActive(init(sizeC,spawnS,L))) = 0
+			 		spawnSpeed(init(sizeC,spawnS,L)) = spawnS
+			 		level(init(sizeC,spawnS,L)) = L	
+			 		levelInit(init(sizeC,spawnS,L)) = L
+			 		
+			 [executeTurn]
+			 		turn(executeTurn(G)) = turn(G) + 1
+			 		∀ num ∈ numLemmingsActive(G) if Level::nature(Level(executeTurn(G)), Lemming::hPos(lemming(executeTurn(G),num)),  Lemming::wPos(lemming(executeTurn(G),num))) = Level::Nature::EXIT then:
+			 		   									 {num} ∉  numLemmingsActive(executeTurn(G)) ^ nbLemmingsSaved(executeTurn(G))++
+			 		∀ num ∈ numLemmingsActive(G) if Lemming::dead(lemming(executeTurn(G),num)) then:
+                        								{num} ∉  numLemmingsActive(executeTurn(G)) ^ nbLemmingsDead(executeTurn(G))++
+			 		if nbLemmingsCreated(G)*spawnSpeed(G) = turn(G)  and  nbLemmingsCreated(G) < sizeColony(executeTurn(G)) then:
+			 			  lemming(executeTurn(G),nbLemmingsCreated(G)) = Lemming::init(nbLemmingsCreated(G), Level::hEntrance(level(executeTurn(G))), Level::wEntrance(level(executeTurn(G))), level(execute(G)))
+			 		if gameOver(executeTurn(G)) then:
+			 			  score(executeTurn(G)) = (nbLemmingsSaved(executeTurn(G))/turn(executeTurn(G))) * 100  
+			 		
+

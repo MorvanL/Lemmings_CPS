@@ -1,0 +1,44 @@
+Testsuite: game.tests.LevelTest
+Tests run: 41, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0,124 sec
+
+Testcase: testGetNaturePre1 took 0,007 sec
+Testcase: testGetNaturePre2 took 0,001 sec
+Testcase: testSetNaturePre5 took 0,001 sec
+Testcase: testIsAnObstaclePre1 took 0 sec
+Testcase: testGetWEntrancePre1 took 0,032 sec
+Testcase: testGetWEntrancePre2 took 0 sec
+Testcase: testSetNaturePre2 took 0 sec
+Testcase: testIsAnObstaclePre2 took 0 sec
+Testcase: testSetNaturePre3 took 0,005 sec
+Testcase: testSetNaturePre4 took 0 sec
+Testcase: testSetNatureTrans1 took 0,001 sec
+Testcase: testGetHEntrancePre2 took 0 sec
+Testcase: testSetNaturePre1 took 0,001 sec
+Testcase: testGetHEntrancePre1 took 0,023 sec
+Testcase: testInitPre2 took 0 sec
+Testcase: testInitPre1 took 0,001 sec
+Testcase: testInitPre4 took 0 sec
+Testcase: testRemovePre1 took 0,001 sec
+Testcase: testRemovePre2 took 0,001 sec
+Testcase: testRemovePre3 took 0 sec
+Testcase: testBuildPre1 took 0,001 sec
+Testcase: testBuildPre3 took 0 sec
+Testcase: testGoPlayPre1 took 0,001 sec
+Testcase: testGoPlayPre2 took 0,001 sec
+Testcase: testGoPlayPre3 took 0,002 sec
+Testcase: testInitPre3 took 0 sec
+Testcase: testInitPre5 took 0 sec
+Testcase: testBuildPre2 took 0,001 sec
+Testcase: testGoPlayPre4 took 0,001 sec
+Testcase: testGoPlayPre8 took 0,001 sec
+Testcase: testGoPlayTrans1 took 0,001 sec
+Testcase: testGoPlayPre7 took 0,002 sec
+Testcase: testGoPlayPre11 took 0,001 sec
+Testcase: testBuildTrans1 took 0,001 sec
+Testcase: testGoPlayPre10 took 0,002 sec
+Testcase: testGoPlayPre5 took 0,001 sec
+Testcase: testInitTrans1 took 0,001 sec
+Testcase: testGoPlayPre12 took 0,001 sec
+Testcase: testRemoveTrans1 took 0,001 sec
+Testcase: testGoPlayPre9 took 0,001 sec
+Testcase: testGoPlayPre6 took 0,001 sec
